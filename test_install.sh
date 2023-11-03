@@ -2,7 +2,7 @@
 set -e
 apt-get install apt-transport-https ca-certificates
 echo "deb [trusted=yes] https://packages.netsec.inf.ethz.ch/debian all main" | tee /etc/apt/sources.list.d/scionlab.list
-apt-get update
+apt-get update -y
 
 
 mkdir /etc/scion
