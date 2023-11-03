@@ -23,7 +23,7 @@ crypto_engine = "openssl"
     # This discovery mechanisms is used for testing purposes
     enable = true
     # The address to return when simulating a network discovery (default "")
-    address = "91.107.236.3:8041"
+    address = "141.44.25.148:8041"
 [dhcp]
     # Whether to enable DHCP discovery or not (default false)
     enable = false
