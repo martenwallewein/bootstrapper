@@ -54,17 +54,17 @@ var (
 )
 
 type Config struct {
-	InterfaceName   string                          `toml:"iface,omitempty"`
-	SciondConfigDir string                          `toml:"sciond_config_dir"`
-	SecurityMode    SecurityMode                    `toml:"security_mode,omitempty"`
-	MOCK            hinting.MOCKHintGeneratorConf   `toml:"mock"`
-	DHCP            hinting.DHCPHintGeneratorConf   `toml:"dhcp"`
-	DHCPv6          hinting.DHCPv6HintGeneratorConf `toml:"dhcpv6"`
-	IPv6            hinting.IPv6HintGeneratorConf   `toml:"ipv6"`
-	DNSSD           hinting.DNSHintGeneratorConf    `toml:"dnssd"`
-	MDNS            hinting.MDNSHintGeneratorConf   `toml:"mdns"`
-	Logging         LogConfig                       `toml:"log,omitempty"`
-	CryptoEngine    string                          `toml:"crypto_engine,omitempty"`
+	InterfaceName   string                        `toml:"iface,omitempty"`
+	SciondConfigDir string                        `toml:"sciond_config_dir"`
+	SecurityMode    SecurityMode                  `toml:"security_mode,omitempty"`
+	MOCK            hinting.MOCKHintGeneratorConf `toml:"mock"`
+	//DHCP            hinting.DHCPHintGeneratorConf `toml:"dhcp"`
+	//DHCPv6          hinting.DHCPHintGeneratorConf `toml:"dhcpv6"` // TODO: V6
+	//IPv6            hinting.IPv6HintGeneratorConf `toml:"ipv6"`
+	//DNSSD           hinting.DNSHintGeneratorConf  `toml:"dnssd"`
+	//MDNS            hinting.MDNSHintGeneratorConf `toml:"mdns"`
+	Logging      LogConfig `toml:"log,omitempty"`
+	CryptoEngine string    `toml:"crypto_engine,omitempty"`
 }
 
 func (cfg *Config) WorkingDir() string {
@@ -117,6 +117,15 @@ func CheckFlags(cfg *Config) (int, bool) {
 	return 0, true
 }
 
+func LoadConfigFile(cfg *Config, path string) error {
+	raw, err := os.ReadFile(path)
+	if err != nil {
+		return err
+	}
+	err = toml.NewDecoder(bytes.NewReader(raw)).Strict(true).Decode(cfg)
+	return err
+}
+
 func LoadFile(cfg *Config) error {
 	raw, err := os.ReadFile(configPath)
 	if err != nil {
@@ -139,7 +148,7 @@ func (cfg *Config) InitDefaults() {
 	if cfg.CryptoEngine == "" {
 		cfg.CryptoEngine = "native"
 	}
-	if cfg.InterfaceName == "" && (cfg.DHCPv6.Enable || cfg.IPv6.Enable || cfg.DHCP.Enable || cfg.MDNS.Enable) {
+	if cfg.InterfaceName == "" { //&& (cfg.DHCPv6.Enable || cfg.IPv6.Enable || cfg.DHCP.Enable || cfg.MDNS.Enable) {
 		log15.Warn("iface flag not set, recommended when IPv6, DHCP or mDNS hinting is enabled")
 		iface, err := getDefaultInterface()
 		if err != nil {
@@ -175,12 +184,12 @@ func (cfg *Config) Validate() error {
 	}
 
 	// Validate iface
-	if cfg.DHCPv6.Enable || cfg.IPv6.Enable || cfg.DHCP.Enable || cfg.MDNS.Enable {
-		_, err := net.InterfaceByName(cfg.InterfaceName)
-		if err != nil {
-			return fmt.Errorf("valid interface value required when IPv6, DHCP or mDNS hinting enabled: %w", err)
-		}
-	}
+	//if cfg.DHCPv6.Enable || cfg.IPv6.Enable || cfg.DHCP.Enable || cfg.MDNS.Enable {
+	//	_, err := net.InterfaceByName(cfg.InterfaceName)
+	//	if err != nil {
+	//		return fmt.Errorf("valid interface value required when IPv6, DHCP or mDNS hinting enabled: %w", err)
+	//	}
+	//}
 	return nil
 }
 

@@ -15,6 +15,7 @@
 
 package hinting
 
+/*
 import (
 	"encoding/binary"
 	"fmt"
@@ -235,3 +236,4 @@ func parseBootstrapVendorOption(optionBytes []byte) (ip net.IP, port int, err er
 	}
 	return
 }
+*/

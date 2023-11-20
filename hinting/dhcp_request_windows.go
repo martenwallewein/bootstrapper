@@ -14,6 +14,7 @@
 
 package hinting
 
+/*
 import (
 	"encoding/binary"
 	"fmt"
@@ -255,3 +256,4 @@ func makeRawUDPPacket(payload []byte, serverAddr, clientAddr net.UDPAddr) ([]byt
 	ret = append(ret, payload...)
 	return ret, nil
 }
+*/

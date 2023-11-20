@@ -13,12 +13,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+//go:build linux
 // +build linux
 
 // Package github.com/insomniacslk/dhcp/client4 has u-root as dependency, which does not support windows,
 
 package hinting
 
+/*
 import (
 	"fmt"
 
@@ -47,3 +49,4 @@ func (g *DHCPHintGenerator) sendReceive(p *dhcpv4.DHCPv4) (*dhcpv4.DHCPv4, error
 	}
 	return ack, nil
 }
+*/

@@ -12,11 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// +build !windows
-// +build !linux
+//go:build !windows && !linux
+// +build !windows,!linux
 
 package hinting
 
+/*
 import (
 	"encoding/binary"
 	"errors"
@@ -239,3 +240,4 @@ func makeRawUDPPacket(payload []byte, serverAddr, clientAddr net.UDPAddr) ([]byt
 	ret = append(ret, payload...)
 	return ret, nil
 }
+*/

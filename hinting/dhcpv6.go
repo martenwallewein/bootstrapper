@@ -14,6 +14,7 @@
 
 package hinting
 
+/*
 import (
 	"encoding/binary"
 	"encoding/hex"
@@ -260,3 +261,4 @@ func parseBootstrapVendorInformationOption(vsio dhcpv6.OptVendorOpts) (ip netip.
 	}
 	return
 }
+*/

@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package main
+package bootstrapper
 
 import (
 	"fmt"
@@ -52,13 +52,13 @@ func NewBootstrapper(cfg *config.Config) (*Bootstrapper, error) {
 	}
 
 	var iface *net.Interface
-	if cfg.DHCPv6.Enable || cfg.IPv6.Enable || cfg.DHCP.Enable || cfg.MDNS.Enable {
-		var err error
-		iface, err = net.InterfaceByName(cfg.InterfaceName)
-		if err != nil {
-			return nil, fmt.Errorf("getting interface '%s' by name: %w", cfg.InterfaceName, err)
-		}
-	}
+	//if cfg.DHCPv6.Enable || cfg.IPv6.Enable || cfg.DHCP.Enable || cfg.MDNS.Enable {
+	//	var err error
+	//	iface, err = net.InterfaceByName(cfg.InterfaceName)
+	//	if err != nil {
+	//		return nil, fmt.Errorf("getting interface '%s' by name: %w", cfg.InterfaceName, err)
+	//	}
+	//}
 	return &Bootstrapper{
 		cfg,
 		iface,
@@ -70,13 +70,14 @@ func (b *Bootstrapper) tryBootstrapping() error {
 	hintGenerators = append(hintGenerators,
 		hinting.NewMockHintGenerator(&cfg.MOCK),
 		// Gets DNS information from IPv6 RAs
-		hinting.NewIPv6HintGenerator(&cfg.IPv6, b.iface),
-		hinting.NewDHCPv6HintGenerator(&cfg.DHCPv6, b.iface),
-		hinting.NewDHCPHintGenerator(&cfg.DHCP, b.iface),
+		//hinting.NewIPv6HintGenerator(&cfg.IPv6, b.iface),
+		// hinting.NewDHCPv6HintGenerator(&cfg.DHCPv6, b.iface),
+		//hinting.NewDHCPHintGenerator(&cfg.DHCP, b.iface),
 		// XXX: DNS-SD depends on DNS resolution working, which can depend on DHCP for getting the local DNS resolver IP
-		hinting.NewDNSSDHintGenerator(&cfg.DNSSD),
+		//hinting.NewDNSSDHintGenerator(&cfg.DNSSD),
 		// XXX: mDNS depends on the DNS search domain to be correct, which can depend on DHCP for getting it
-		hinting.NewMDNSHintGenerator(&cfg.MDNS, b.iface))
+		//hinting.NewMDNSHintGenerator(&cfg.MDNS, b.iface))
+	)
 	wg := sync.WaitGroup{}
 	for _, g := range hintGenerators {
 		wg.Add(1)
